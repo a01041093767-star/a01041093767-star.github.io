@@ -1,48 +1,388 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background-color: #ffffff;
-            color: #fff;
-            font-family: '맑은 고딕', sans-serif;
+            box-sizing: border-box;
         }
 
-        .download-btn {
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Gradients */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.6;
+            animation: moveBlob 15s infinite alternate ease-in-out;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            top: -100px;
+            left: -100px;
+            border-radius: 50%;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            bottom: -50px;
+            right: -50px;
+            border-radius: 50%;
+            animation-duration: 20s;
+        }
+
+        @keyframes moveBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 100px) scale(1.1); }
+            100% { transform: translate(-50px, 50px) scale(0.9); }
+        }
+
+        /* Profile Card - Glassmorphism */
+        .profile-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 3rem;
+            width: 90%;
+            max-width: 450px;
+            z-index: 1;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Scrollbar styling for card */
+        .profile-card::-webkit-scrollbar {
+            width: 6px;
+        }
+        .profile-card::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Avatar */
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .avatar {
             width: 100%;
             height: 100%;
-            background-color: #000;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1e293b, #334155);
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+        }
+
+        .avatar-ring {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3b82f6, #ec4899);
+            z-index: 1;
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Info Items */
+        .name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .role {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .info-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
             color: #fff;
-            font-family: '맑은 고딕', sans-serif;
-            font-size: 48px;
-            font-weight: bold;
-            margin: 20px;
         }
 
-        header {
-            text-align: center;
-            padding: 20px;
+        .info-content {
+            display: flex;
+            flex-direction: column;
         }
 
-        .main-text {
-            font-size: 48px;
-            font-weight: bold;
-            margin: 20px;
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
         }
 
-        .description {
-            font-size: 18px;
-            color: #ccc;
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 500;
         }
+
+        /* Contact Form */
+        .contact-section {
+            margin-top: 2.5rem;
+            text-align: left;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+        }
+        
+        .contact-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .contact-btn {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px -10px var(--accent-glow);
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -10px var(--accent-glow);
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        }
+
     </style>
 </head>
-
 <body>
 
-</body>
+    <!-- Animated Background -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
+    <!-- Main Content -->
+    <div class="profile-card">
+        <div class="avatar-container">
+            <div class="avatar-ring"></div>
+            <!-- Empty div acting as avatar placeholder -->
+            <div class="avatar"></div>
+        </div>
+
+        <h1 class="name">홍길동</h1>
+        <div class="role">Developer</div>
+
+        <ul class="info-list">
+            <li class="info-item">
+                <div class="info-icon">👤</div>
+                <div class="info-content">
+                    <span class="info-label">이름 (Name)</span>
+                    <span class="info-value">홍길동</span>
+                </div>
+            </li>
+            <li class="info-item">
+                <div class="info-icon">🎂</div>
+                <div class="info-content">
+                    <span class="info-label">나이 (Age)</span>
+                    <span class="info-value">20세</span>
+                </div>
+            </li>
+            <li class="info-item">
+                <div class="info-icon">✉️</div>
+                <div class="info-content">
+                    <span class="info-label">이메일 (Email)</span>
+                    <span class="info-value" id="displayEmail">a01041093767@gmail.com</span>
+                </div>
+            </li>
+        </ul>
+
+        <!-- 이메일 작성 폼 추가 -->
+        <div class="contact-section">
+            <h3>메시지 보내기</h3>
+            <form class="contact-form" id="contactForm">
+                <input type="text" id="subject" placeholder="제목을 입력하세요 (Subject)" required>
+                <textarea id="message" rows="4" placeholder="보내실 내용을 입력하세요... (Message)" required></textarea>
+                <button type="submit" class="contact-btn">이메일 전송하기 🚀</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // 기본 제출 동작(새로고침) 방지
+            
+            const btn = document.querySelector('.contact-btn');
+            const originalBtnText = btn.innerText;
+            btn.innerText = '전송 중... ⏳';
+            btn.disabled = true;
+
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // FormSubmit API를 사용하여 별도 가입/API 키 없이 이메일 전송
+            fetch("https://formsubmit.co/ajax/a01041093767@gmail.com", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: subject,
+                    message: message,
+                    _captcha: "false"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    btn.innerText = '전송 완료! ✅';
+                    document.getElementById('contactForm').reset();
+                    alert("이메일 전송에 성공했습니다!\n\n💡 처음 보내는 경우: 폼 활성화를 위해 a01041093767@gmail.com 메일함으로 'Action Required: Activate your form' 이라는 메일이 도착합니다. 해당 메일의 [Activate Form] 버튼을 한 번만 클릭해주시면 이후부터 이 내용이 정상적으로 전달됩니다.");
+                } else {
+                    btn.innerText = '전송 실패 ❌';
+                    alert("전송에 실패했습니다. 이메일 주소를 다시 확인해주세요.");
+                }
+                setTimeout(() => {
+                    btn.innerText = originalBtnText;
+                    btn.disabled = false;
+                }, 5000);
+            })
+            .catch(error => {
+                btn.innerText = '전송 실패 ❌';
+                console.log("Error:", error);
+                alert("네트워크 오류가 발생했습니다.");
+                setTimeout(() => {
+                    btn.innerText = originalBtnText;
+                    btn.disabled = false;
+                }, 3000);
+            });
+        });
+    </script>
+</body>
 </html>
